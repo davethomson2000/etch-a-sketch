@@ -1,0 +1,25 @@
+h1 {
+    text-align: center;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 15px;
+}
+
+#sketch-area {
+    border-style: solid;
+    border-color: darkslategrey;
+    height: 800px;
+    width: 800px;
+    margin: auto 15px;
+    display: flex;
+    flex-wrap: wrap;
+}
