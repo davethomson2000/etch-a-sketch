@@ -23,3 +23,16 @@ h1 {
     display: flex;
     flex-wrap: wrap;
 }
+
+.sketch-box {
+    border-style: dashed;
+    border-color: coral;
+    border-width: "1px";
+    flex: 0 0 auto;
+    margin: 0px;
+    box-sizing: border-box;
+}
+
+.normal-hover {
+    background: rgb(246, 121, 58);
+}

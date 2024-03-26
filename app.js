@@ -3,15 +3,22 @@ reset.addEventListener("click",updateSketchArea)
 
 
 function updateSketchArea() {
-    const pixelsPerRow = +prompt("How many pixels per row?")
+    const boxesPerRow = +prompt("How many boxes per row?")
     const sketchArea = document.querySelector("#sketch-area")
-    let div = document.createElement("div")
-    let widthInPixels = 800/pixelsPerRow
-    div.style.width = widthInPixels + "px"
-    div.style.height = div.style.width
-    div.style.borderStyle = "dashed"
-    div.style.borderColor = "coral"
-    div.style.flex = "0 0 auto"
-    div.textContent = "Hi"
-    sketchArea.appendChild(div)
+    
+    // clean up sketch area
+    while (sketchArea.firstChild) {
+        sketchArea.removeChild(sketchArea.firstChild)
+    }
+
+    for (let i=1; i <= (boxesPerRow * boxesPerRow); i++) {
+        const div = document.createElement("div")
+        const widthInPixels = sketchArea.clientWidth / boxesPerRow
+        
+        div.classList.add("sketch-box")
+        div.style.width = widthInPixels + "px"
+        div.style.height = div.style.width
+        div.addEventListener("mouseover",() => {div.classList.toggle("normal-hover")})
+        sketchArea.appendChild(div)
+    }
 }
