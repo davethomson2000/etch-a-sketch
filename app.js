@@ -5,7 +5,7 @@ const darkenButton = document.querySelector("#darken")
 
 let mode = "Normal"
 
-resetButton.addEventListener("click",updateSketchArea)
+resetButton.addEventListener("click",() => drawSketchArea())
 
 normalButton.addEventListener("click", changeMode)
 rainbowButton.addEventListener("click", changeMode)
@@ -23,11 +23,14 @@ function changeMode(event) {
     mode = modeClicked[0].toUpperCase() + modeClicked.slice(1)
     
     modeText.textContent = mode
-    updateSketchArea()
+    drawSketchArea()
 }
 
-function updateSketchArea() {
-    const boxesPerRow = +prompt("How many boxes per row?")
+function drawSketchArea(boxesPerRow) {
+    if (!boxesPerRow) {
+        boxesPerRow = Math.min(+prompt("How many boxes per row?"), 40)
+    }
+     
     const sketchArea = document.querySelector("#sketch-area")
 
     // clean up sketch area
@@ -59,3 +62,5 @@ function updateSketchArea() {
         sketchArea.appendChild(div)
     }
 }
+
+drawSketchArea(20)
