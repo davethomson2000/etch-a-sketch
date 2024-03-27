@@ -1,29 +1,49 @@
 const resetButton = document.querySelector("#reset")
+const changeResolutionButton = document.querySelector("#choose-resolution")
 const normalButton = document.querySelector("#normal")
 const rainbowButton = document.querySelector("#rainbow")
 const darkenButton = document.querySelector("#darken")
+const autoDrawButton = document.querySelector('#auto-draw')
+const clickToDrawButton = document.querySelector('#click-to-draw')
 
-let mode = "Normal"
+let paintMode = "Normal"
+let drawMethod = "Click-to-draw"
+let boxesPerRow = 20
 
-resetButton.addEventListener("click",() => drawSketchArea())
+resetButton.addEventListener("click",() => drawSketchArea(boxesPerRow))
+changeResolutionButton.addEventListener("click", () => drawSketchArea(0))
 
-normalButton.addEventListener("click", changeMode)
-rainbowButton.addEventListener("click", changeMode)
-darkenButton.addEventListener("click", changeMode)
+normalButton.addEventListener("click", changePaintMode)
+rainbowButton.addEventListener("click", changePaintMode)
+darkenButton.addEventListener("click", changePaintMode)
+
+autoDrawButton.addEventListener("click", changeDrawMethod)
+clickToDrawButton.addEventListener("click", changeDrawMethod)
 
 function randomRGBValue() {
     return Math.floor(Math.random() * 255)
 }
 
-function changeMode(event) {
-    let modeText = document.querySelector("#mode")
+function changeDrawMethod(event) {
+    let drawMethodText = document.querySelector("#draw-method")
     const modeClicked = event.target.id 
     
     // Capitalise first letter
-    mode = modeClicked[0].toUpperCase() + modeClicked.slice(1)
+    drawMethod = modeClicked[0].toUpperCase() + modeClicked.slice(1)
     
-    modeText.textContent = mode
-    drawSketchArea()
+    drawMethodText.textContent = drawMethod
+    drawSketchArea(boxesPerRow)
+}
+
+function changePaintMode(event) {
+    let paintModeText = document.querySelector("#paint-mode")
+    const modeClicked = event.target.id 
+    
+    // Capitalise first letter
+    paintMode = modeClicked[0].toUpperCase() + modeClicked.slice(1)
+    
+    paintModeText.textContent = paintMode
+    drawSketchArea(boxesPerRow)
 }
 
 function drawSketchArea(boxesPerRow) {
@@ -46,21 +66,34 @@ function drawSketchArea(boxesPerRow) {
         div.classList.add("sketch-box")
         div.style.width = widthInPixels + "px"
         div.style.height = div.style.width
+        div.draggable = true
         
-        switch(mode) {
+        //set mouse event type that will be used when drawing based on the mode selected 
+        let mouseEventType 
+        switch(drawMethod) {
+            case "Click-to-draw":
+                mouseEventType = "dragenter"
+                break
+            case "Auto-draw":
+                mouseEventType = "mouseover"
+                break
+            default:
+                mouseEventType = "mouseover"
+        }
+        switch(paintMode) {
             case "Normal":
-                div.addEventListener("mouseover",() => {div.classList.add("normal-hover")})
+                div.addEventListener(mouseEventType,() => {div.classList.add("normal-hover")})
                 break
             case "Rainbow":
-                div.addEventListener("mouseover",() => {div.style.background = `rgb(${randomRGBValue()}, ${randomRGBValue()}, ${randomRGBValue()})`})
+                div.addEventListener(mouseEventType,() => {div.style.background = `rgb(${randomRGBValue()}, ${randomRGBValue()}, ${randomRGBValue()})`})
                 break
             case "Darken":
                 div.classList.add("darken-hover")
-                div.addEventListener("mouseover",() => {div.style.opacity = +div.style.opacity + 0.1})
+                div.addEventListener(mouseEventType,() => {div.style.opacity = +div.style.opacity + 0.1})
                 break
         }
         sketchArea.appendChild(div)
     }
 }
 
-drawSketchArea(20)
+drawSketchArea(boxesPerRow)

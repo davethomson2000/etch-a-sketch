@@ -10,11 +10,21 @@
 <body>
     <h1>Etch A Sketch</h1>
     <div class="buttons">
-        <button id="reset">Reset</button>
-        <button id="normal">Normal Mode</button>
-        <button id="rainbow">Rainbow Mode</button>
-        <button id="darken">Darken Mode</button>
-        <div>Mode: <span id="mode">Normal</span></div>
+        <div>
+            <button id="choose-resolution">Choose resolution</button>
+            <button id="reset">Reset</button>
+        </div>
+        <div>
+            <button id="auto-draw">Auto-draw</button>
+            <button id="click-to-draw">Click-to-draw</button>
+            <div>Draw Mode: <span id="draw-method">Click-to-draw</span></div>
+        </div>
+        <div>
+            <button id="normal">Normal Mode</button>
+            <button id="rainbow">Rainbow Mode</button>
+            <button id="darken">Darken Mode</button>
+            <div>Paint Mode: <span id="paint-mode">Normal</span></div>
+        </div>
     </div>
     <div class="container">
         <div id="sketch-area"></div>
