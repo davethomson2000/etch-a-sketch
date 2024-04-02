@@ -21,12 +21,12 @@ h1 {
 #sketch-area {
     border-style: solid;
     border-color: darkslategrey;
-    height: 800px;
-    width: 800px;
+    height: 600px;
+    width: 600px;
     margin: auto 15px;
     display: flex;
     flex-wrap: wrap;
-    flex: 0 0 800px;
+    flex: 0 0 600px;
 }
 
 .sketch-box {

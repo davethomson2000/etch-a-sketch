@@ -10,7 +10,11 @@ let paintMode = "Normal"
 let drawMethod = "Click-to-draw"
 let boxesPerRow = 20
 
-resetButton.addEventListener("click",() => drawSketchArea(boxesPerRow))
+//stop the cursor changing on dragover to look better for user
+document.addEventListener("dragenter", (e) => e.preventDefault())
+document.addEventListener("dragover", (e) => e.preventDefault())
+
+resetButton.addEventListener("click", () => drawSketchArea(boxesPerRow))
 changeResolutionButton.addEventListener("click", () => drawSketchArea(0))
 
 normalButton.addEventListener("click", changePaintMode)
@@ -26,22 +30,22 @@ function randomRGBValue() {
 
 function changeDrawMethod(event) {
     let drawMethodText = document.querySelector("#draw-method")
-    const modeClicked = event.target.id 
-    
+    const modeClicked = event.target.id
+
     // Capitalise first letter
     drawMethod = modeClicked[0].toUpperCase() + modeClicked.slice(1)
-    
+
     drawMethodText.textContent = drawMethod
     drawSketchArea(boxesPerRow)
 }
 
 function changePaintMode(event) {
     let paintModeText = document.querySelector("#paint-mode")
-    const modeClicked = event.target.id 
-    
+    const modeClicked = event.target.id
+
     // Capitalise first letter
     paintMode = modeClicked[0].toUpperCase() + modeClicked.slice(1)
-    
+
     paintModeText.textContent = paintMode
     drawSketchArea(boxesPerRow)
 }
@@ -50,7 +54,7 @@ function drawSketchArea(boxesPerRow) {
     if (!boxesPerRow) {
         boxesPerRow = Math.min(+prompt("How many boxes per row?"), 40)
     }
-     
+
     const sketchArea = document.querySelector("#sketch-area")
 
     // clean up sketch area
@@ -59,38 +63,41 @@ function drawSketchArea(boxesPerRow) {
     }
 
     //create grid of divs (boxes) which wrap
-    for (let i=1; i <= (boxesPerRow * boxesPerRow); i++) {
+    for (let i = 1; i <= (boxesPerRow * boxesPerRow); i++) {
         const div = document.createElement("div")
         const widthInPixels = sketchArea.clientWidth / boxesPerRow
-        
+
         div.classList.add("sketch-box")
         div.style.width = widthInPixels + "px"
         div.style.height = div.style.width
         div.draggable = true
-        
+
         //set mouse event type that will be used when drawing based on the mode selected 
-        let mouseEventType 
-        switch(drawMethod) {
+        let mouseEventTypes = []
+        switch (drawMethod) {
             case "Click-to-draw":
-                mouseEventType = "dragenter"
+                mouseEventTypes.push("dragenter")
+                mouseEventTypes.push("click")
                 break
             case "Auto-draw":
-                mouseEventType = "mouseover"
+                mouseEventTypes.push("mouseover")
                 break
             default:
-                mouseEventType = "mouseover"
+                mouseEventTypes.push("mouseover")
         }
-        switch(paintMode) {
-            case "Normal":
-                div.addEventListener(mouseEventType,() => {div.classList.add("normal-hover")})
-                break
-            case "Rainbow":
-                div.addEventListener(mouseEventType,() => {div.style.background = `rgb(${randomRGBValue()}, ${randomRGBValue()}, ${randomRGBValue()})`})
-                break
-            case "Darken":
-                div.classList.add("darken-hover")
-                div.addEventListener(mouseEventType,() => {div.style.opacity = +div.style.opacity + 0.1})
-                break
+        for (let mouseEventType of mouseEventTypes) {
+            switch (paintMode) {
+                case "Normal":
+                    div.addEventListener(mouseEventType, () => { div.classList.add("normal-hover") })
+                    break
+                case "Rainbow":
+                    div.addEventListener(mouseEventType, () => { div.style.background = `rgb(${randomRGBValue()}, ${randomRGBValue()}, ${randomRGBValue()})` })
+                    break
+                case "Darken":
+                    div.classList.add("darken-hover")
+                    div.addEventListener(mouseEventType, () => { div.style.opacity = +div.style.opacity + 0.1 })
+                    break
+            }
         }
         sketchArea.appendChild(div)
     }
